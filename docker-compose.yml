@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PostgreSQL para Usuarios y Plazoleta
+  usuarios_db:
+    image: postgres:16
+    container_name: usuarios_db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: usuarios_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - usuarios_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - plazoleta-network
+
+  plazoleta_db:
+    image: postgres:16
+    container_name: plazoleta_db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: plazoleta_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - plazoleta_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - plazoleta-network
+
+  # MongoDB para Trazabilidad
+  trazabilidad_db:
+    image: mongo:5.0
+    container_name: trazabilidad_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-admin}
+      MONGO_INITDB_DATABASE: trazabilidad_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - trazabilidad_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - plazoleta-network
+
+volumes:
+  usuarios_data:
+    driver: local
+  plazoleta_data:
+    driver: local
+  trazabilidad_data:
+    driver: local
+
+networks:
+  plazoleta-network:
+    driver: bridge
