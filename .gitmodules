@@ -1,0 +1,19 @@
+[submodule "usuarios-service"]
+	path = usuarios-service
+	url = https://github.com/Nekstoreo/usuarios-service.git
+	branch = main
+
+[submodule "plazoleta-service"]
+	path = plazoleta-service
+	url = https://github.com/Nekstoreo/plazoleta-service.git
+	branch = main
+
+[submodule "trazabilidad-service"]
+	path = trazabilidad-service
+	url = https://github.com/Nekstoreo/trazabilidad-service.git
+	branch = main
+
+[submodule "mensajeria-service"]
+	path = mensajeria-service
+	url = https://github.com/Nekstoreo/mensajeria-service.git
+	branch = main
