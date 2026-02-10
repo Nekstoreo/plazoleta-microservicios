@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # PostgreSQL para Usuarios y Plazoleta
   usuarios_db:
@@ -42,11 +40,11 @@ services:
 
   # MongoDB para Trazabilidad
   trazabilidad_db:
-    image: mongo:5.0
+    image: mongo:7
     container_name: trazabilidad_db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-admin}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: trazabilidad_db
     ports:
       - "27017:27017"
